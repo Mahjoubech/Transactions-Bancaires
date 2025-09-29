@@ -1,4 +1,4 @@
-package dao;
+package dao.repository;
 
-public class CompteDao {
+public class CompteRepository {
 }
