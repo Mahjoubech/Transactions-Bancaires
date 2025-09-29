@@ -1,4 +1,7 @@
 package model.entity;
 
-public class Client {
-}
+public record Client (
+    String id,
+    String nom,
+    String email
+){};
