@@ -132,6 +132,7 @@ public class ClientMenu {
         if (num < 1 || num > clients.size()) {
             System.out.println("Numéro invalide.");
             return;
+
         }
         Client abn = clients.get(num - 1);
         System.out.println("Modification de Client id : " + abn.id());
