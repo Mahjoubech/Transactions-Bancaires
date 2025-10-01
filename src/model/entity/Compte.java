@@ -1,10 +1,6 @@
 package model.entity;
 
 import model.enums.typeCompte;
-import util.Validateur;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public sealed class Compte  permits  CompteCourant, CompteEpargne{
     protected String id ;
