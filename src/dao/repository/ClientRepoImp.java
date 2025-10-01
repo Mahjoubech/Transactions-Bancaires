@@ -56,11 +56,12 @@ public class ClientRepoImp implements ClientRepository {
              ps.setString(1 , id);
              var rs = ps.executeQuery();
              if(rs.next()){
-                 return Optional.of(new Client(
+                 Client c = new Client(
                          rs.getString("id"),
                          rs.getString("nom"),
                          rs.getString("email")
-                 ));
+                 );
+                 return Optional.of(c);
              }
          }catch (SQLException ex){
              throw new RuntimeException(ex);
