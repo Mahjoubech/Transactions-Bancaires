@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClientServiceInterface {
-    void create(String nom , String email);
+        Client   create(String nom , String email);
     void update(String id , String nom , String email);
     void delete(Client c);
     Optional<Client> findById(String id);
