@@ -204,6 +204,51 @@ public class TransactionService implements TransactionServiceInterface {
                 .average()
                 .orElse(0.0);
     }
+@Override
+    public List<Transaction> detecterTransactionsSuspectes(double seuilMontant, String idClient) {
+        // 1. récupérer tous les comptes du client
+        List<Compte> comptes = compteRepository.findAll().stream()
+                .filter(c -> c.getIdClient().equalsIgnoreCase(idClient))
+                .toList();
 
+        List<Transaction> transactionsClient = transactionRepository.findAll().stream()
+                .filter(t -> comptes.stream().anyMatch(c -> c.getId().equals(t.idCompte())))
+                .toList();
+
+        // 2. filtrer par montant élevé
+        List<Transaction> suspectes = transactionsClient.stream()
+                .filter(t -> t.montant() >= seuilMontant)
+                .toList();
+
+        // 3. détecter lieux inhabituels
+        // ex: si le client n'a jamais utilisé ce lieu
+        List<String> lieuxConnus = transactionsClient.stream()
+                .map(Transaction::lieu)
+                .distinct()
+                .toList();
+
+        List<Transaction> lieuxInhabituels = transactionsClient.stream()
+                .filter(t -> !lieuxConnus.contains(t.lieu()))
+                .toList();
+
+        // 4. détecter fréquence excessive: +3 transactions par jour
+        List<Transaction> frequencesExcessives = transactionsClient.stream()
+                .collect(Collectors.groupingBy(
+                        t -> DateUtil.formatDate(t.date()),
+                        Collectors.counting()
+                ))
+                .entrySet().stream()
+                .filter(e -> e.getValue() > 3)
+                .flatMap(e -> transactionsClient.stream()
+                        .filter(t -> DateUtil.formatDate(t.date()).equals(e.getKey()))
+                )
+                .toList();
+
+        // fusionner toutes les transactions suspectes (sans doublons)
+        return Stream.of(suspectes, lieuxInhabituels, frequencesExcessives)
+                .flatMap(List::stream)
+                .distinct()
+                .toList();
+    }
 
 }
