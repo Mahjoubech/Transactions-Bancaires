@@ -19,61 +19,60 @@ import java.util.stream.Stream;
 public class TransactionService implements TransactionServiceInterface {
     private final TransactionRepository transactionRepository;
     private final CompteRepository compteRepository;
-
-    public TransactionService(TransactionRepository transactionRepository, CompteRepository compteRepository) {
+    public TransactionService(TransactionRepository transactionRepository , CompteRepository compteRepository) {
         this.compteRepository = compteRepository;
         this.transactionRepository = transactionRepository;
     }
 
     @Override
-    public void ajoute(double amount, String idCompte, typeTransaction type, String lieu) {
-        try {
-            String accountId = Helper.generateTransactionCode();
-            if (!Validateur.isPositiveAmount(amount)) {
-                throw new IllegalArgumentException("Montant doit être positif !");
-            }
-            Date date = new Date();
-            if (type == null) {
-                throw new IllegalArgumentException("Type de transaction requis !");
-            }
-            Compte compte = compteRepository.findById(idCompte)
-                    .orElseThrow(() -> new IllegalArgumentException("Compte introuvable !"));
-            if (type.equals(typeTransaction.RETRAIT)) {
-                if (compte.getSolde() < amount) {
-                    throw new IllegalArgumentException("Solde insuffisant pour le retrait !");
-                }
-                compte.setSolde(compte.getSolde() - amount);
-                compteRepository.update(compte);
-            } else if (type.equals(typeTransaction.VERSEMENT)) {
+    public void ajoute(double amount ,String idCompte , typeTransaction type, String lieu){
+       try{
+          String accountId = Helper.generateTransactionCode();
+           if(!Validateur.isPositiveAmount(amount)) {
+               throw new IllegalArgumentException("Montant doit être positif !");
+           }
+           Date date = new Date();
+           if(type == null) {
+               throw new IllegalArgumentException("Type de transaction requis !");
+           }
+           Compte compte = compteRepository.findById(idCompte)
+                   .orElseThrow(() -> new IllegalArgumentException("Compte introuvable !"));
+           if(type.equals(typeTransaction.RETRAIT)){
+               if (compte.getSolde() < amount) {
+                   throw new IllegalArgumentException("Solde insuffisant pour le retrait !");
+               }
+               compte.setSolde(compte.getSolde() - amount);
+               compteRepository.update(compte);
+           }else if (type.equals(typeTransaction.VERSEMENT)){
                 compte.setSolde(compte.getSolde() + amount);
-                compteRepository.update(compte);
-            } else if (type.equals(typeTransaction.VIREMENT)) {
+               compteRepository.update(compte);
+           }else
+               if(type.equals(typeTransaction.VIREMENT)){
                 Validateur.validateVirementDetails(lieu);
-                String[] detailParts = lieu.split("->");
-                String sourceAccountId = detailParts[0].trim();
-                String destinationAccountId = detailParts[1].trim();
+               String[] detailParts = lieu.split("->");
+               String sourceAccountId = detailParts[0].trim();
+               String destinationAccountId = detailParts[1].trim();
                 Compte sourceCompte = compteRepository.findById(sourceAccountId)
-                        .orElseThrow(() -> new IllegalArgumentException("Compte source introuvable !"));
+                          .orElseThrow(() -> new IllegalArgumentException("Compte source introuvable !"));
                 Compte destinationCompte = compteRepository.findById(destinationAccountId)
-                        .orElseThrow(() -> new IllegalArgumentException("Compte destination introuvable !"));
+                          .orElseThrow(() -> new IllegalArgumentException("Compte destination introuvable !"));
                 if (sourceCompte.getSolde() < amount) {
-                    throw new IllegalArgumentException("Solde insuffisant pour le virement !");
+                     throw new IllegalArgumentException("Solde insuffisant pour le virement !");
                 }
                 sourceCompte.setSolde(sourceCompte.getSolde() - amount);
                 destinationCompte.setSolde(destinationCompte.getSolde() + amount);
                 compteRepository.update(sourceCompte);
                 compteRepository.update(destinationCompte);
-            }
-            Transaction t = new Transaction(accountId, date, amount, idCompte, type, lieu);
-            transactionRepository.create(t);
-            System.out.println("Transaction ajoutée avec succès !");
-        } catch (Exception e) {
-            System.out.println("Error adding transaction: " + e.getMessage());
-        }
+           }
+           Transaction t = new Transaction(accountId,date, amount,idCompte, type, lieu);
+               transactionRepository.create(t);
+           System.out.println("Transaction ajoutée avec succès !");
+       }catch(Exception e){
+        System.out.println("Error adding transaction: " + e.getMessage());
+       }
     }
-
     @Override
-    public Optional<Transaction> findById(String id) {
+    public Optional<Transaction> findById(String id){
         try {
             if (id == null || id.isEmpty()) {
                 throw new IllegalArgumentException("L'ID du Transaction ne peut pas être vide !");
@@ -85,51 +84,45 @@ public class TransactionService implements TransactionServiceInterface {
             System.out.println("Erreur lors de la recherche du compte : " + e.getMessage());
             return Optional.empty();
         }
-    }
-
-    ;
-
+    };
     @Override
-    public List<Transaction> getAll() {
-        try {
+    public List<Transaction> getAll(){
+        try{
             List<Transaction> transactions = transactionRepository.findAll();
-            if (transactions.isEmpty()) {
+            if(transactions.isEmpty()){
                 throw new IllegalArgumentException("Aucune transaction trouvée !");
             }
-            return transactions;
-        } catch (Exception e) {
+            return  transactions;
+        }catch(Exception e){
             System.out.println("Error fetching transactions: " + e.getMessage());
             return List.of();
         }
 
     }
-
     @Override
-    public List<Transaction> findByMontant(Double montant) {
-        try {
+    public List<Transaction> findByMontant(Double montant){
+        try{
             if (montant == null || montant <= 0) {
                 throw new IllegalArgumentException("Le montant doit être positif !");
             }
             return transactionRepository.findAll().stream()
-                    .filter(t -> t.montant() == montant).toList();
+                    .filter(t->t.montant() == montant).toList();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
-
     @Override
-    public List<Transaction> findByType(typeTransaction type) {
-        try {
+    public List<Transaction> findByType(typeTransaction type){
+        try{
             if (type == null) {
                 throw new IllegalArgumentException("Le type de transaction ne peut pas être nul !");
             }
             return transactionRepository.findAll().stream()
-                    .filter(t -> t.type() == type).toList();
+                    .filter(t->t.type() == type).toList();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public List<Transaction> findByLieu(String lieu) {
         try {
@@ -148,10 +141,9 @@ public class TransactionService implements TransactionServiceInterface {
             return List.of();
         }
     }
-
     @Override
-    public List<Transaction> findByDate(Date date) {
-        try {
+    public List<Transaction> findByDate(Date date){
+        try{
             if (date == null) {
                 throw new IllegalArgumentException("Date ne peut pas être nulle !");
             }
@@ -163,4 +155,55 @@ public class TransactionService implements TransactionServiceInterface {
             return List.of();
         }
     }
+    @Override
+    public Map<typeTransaction, List<Transaction>> groupByType() {
+        return transactionRepository.findAll().stream()
+                .collect(Collectors.groupingBy(Transaction::type));
+    }
+    @Override
+    public Map<String, List<Transaction>> groupByDate() {
+        return transactionRepository.findAll().stream()
+                .collect(Collectors.groupingBy(t -> DateUtil.formatDate(t.date())));
+    }
+    @Override
+    public double totalByCompte(String idCompte) {
+        return transactionRepository.findAll().stream()
+                .filter(t -> t.idCompte().equalsIgnoreCase(idCompte))
+                .mapToDouble(Transaction::montant)
+                .sum();
+    }
+@Override
+    public double moyenneByCompte(String idCompte) {
+        return transactionRepository.findAll().stream()
+                .filter(t -> t.idCompte().equalsIgnoreCase(idCompte))
+                .mapToDouble(Transaction::montant)
+                .average()
+                .orElse(0.0);
+    }
+@Override
+    public double totalByClient(String idClient) {
+        // خاصك هنا يكون عندك relation client -> comptes
+        List<Compte> comptes = compteRepository.findAll().stream()
+                .filter(c -> c.getIdClient().equalsIgnoreCase(idClient))
+                .toList();
+
+        return transactionRepository.findAll().stream()
+                .filter(t -> comptes.stream().anyMatch(c -> c.getId().equals(t.idCompte())))
+                .mapToDouble(Transaction::montant)
+                .sum();
+    }
+@Override
+    public double moyenneByClient(String idClient) {
+        List<Compte> comptes = compteRepository.findAll().stream()
+                .filter(c -> c.getIdClient().equalsIgnoreCase(idClient))
+                .toList();
+
+        return transactionRepository.findAll().stream()
+                .filter(t -> comptes.stream().anyMatch(c -> c.getId().equals(t.idCompte())))
+                .mapToDouble(Transaction::montant)
+                .average()
+                .orElse(0.0);
+    }
+
+
 }
