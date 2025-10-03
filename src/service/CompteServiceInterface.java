@@ -1,9 +1,7 @@
-package service.interfaces;
+package service;
 
-import dao.interfaces.CompteRepository;
-import model.entity.Client;
-import model.entity.Compte;
-import model.enums.typeCompte;
+import entity.Compte;
+import enums.typeCompte;
 
 import java.util.List;
 import java.util.Optional;

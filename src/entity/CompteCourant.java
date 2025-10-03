@@ -1,5 +1,5 @@
-package model.entity;
-import model.enums.typeCompte;
+package entity;
+import enums.typeCompte;
 public final class CompteCourant extends Compte {
     private double decouvert;
    public  CompteCourant(String id, String num, String idClient, double solde, typeCompte typeCompte ,double decouvert ) {

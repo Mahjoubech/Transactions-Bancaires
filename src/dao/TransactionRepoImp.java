@@ -1,8 +1,8 @@
-package dao.repository;
+package dao;
 
-import dao.interfaces.TransactionRepository;
-import model.entity.Transaction;
-import model.enums.typeTransaction;
+import entity.Transaction;
+import enums.typeTransaction;
+import util.DateUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ public class TransactionRepoImp implements TransactionRepository {
         String request = "INSERT INTO Transaction (id, date, montant, typeTransaction, lieu ,idCompte) VALUES (?, ?, ?, ?, ? ,?)";
         try(var ps = conn.prepareStatement(request)){
             ps.setString(1 ,transaction.id());
-            ps.setString(2 ,transaction.date().toString());
+            ps.setTimestamp(2, DateUtil.toTimestamp(transaction.date()));
             ps.setDouble(3 ,transaction.montant());
             ps.setString(4 ,transaction.type().toString());
             ps.setString(5 ,transaction.lieu());
@@ -30,19 +30,8 @@ public class TransactionRepoImp implements TransactionRepository {
         }
     }
     @Override
-    public void update(Transaction transaction) {
-        String request = "UPDATE Transaction SET date = ?, montant = ?, typeTransaction = ?, lieu = ? ,idCompte = ? WHERE id = ?";
-        try(var ps = conn.prepareStatement(request)){
-            ps.setString(1 ,transaction.date().toString());
-            ps.setDouble(2 ,transaction.montant());
-            ps.setString(3 ,transaction.type().toString());
-            ps.setString(4 ,transaction.lieu());
-            ps.setString(5 ,transaction.idCompte());
-            ps.setString(6 ,transaction.id());
-            ps.executeUpdate();
-        }catch(SQLException e){
-            throw new RuntimeException(e);
-        }
+    public void update(Transaction transaction){
+        System.out.println("Update not supported");
     }
     @Override
     public void delete(String id) {
@@ -115,6 +104,7 @@ public class TransactionRepoImp implements TransactionRepository {
             throw new RuntimeException(e);
         }
     }
+
 
 
 }

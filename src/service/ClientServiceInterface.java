@@ -1,6 +1,6 @@
-package service.interfaces;
+package service;
 
-import model.entity.Client;
+import entity.Client;
 import java.util.List;
 import java.util.Optional;
 

@@ -17,4 +17,10 @@ public class Helper {
         String randomPart = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         return "ACC - " + datePart + "-" + randomPart;
     }
+    public static String generateTransactionCode() {
+        String datePart = java.time.LocalDate.now().toString().replace("-", ""); // YYYYMMDD
+        int number = new Random().nextInt(10000); // 0 à 9999
+        return String.format("TRX-%s-%04d", datePart, number);
+    }
+
 }

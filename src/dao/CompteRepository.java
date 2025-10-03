@@ -1,6 +1,6 @@
-package dao.interfaces;
+package dao;
 
-import model.entity.Compte;
+import entity.Compte;
 
 import java.util.List;
 

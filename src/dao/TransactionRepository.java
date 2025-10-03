@@ -1,9 +1,7 @@
-package dao.interfaces;
+package dao;
 
-import model.entity.Transaction;
-import model.enums.typeTransaction;
+import entity.Transaction;
 
-import java.util.Date;
 import java.util.List;
 
 public interface TransactionRepository extends Crud<Transaction> {

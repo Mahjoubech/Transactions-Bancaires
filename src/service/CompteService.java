@@ -1,16 +1,13 @@
 package service;
 
-import dao.interfaces.ClientRepository;
-import dao.interfaces.CompteRepository;
-import model.entity.Compte;
-import model.entity.CompteCourant;
-import model.entity.CompteEpargne;
-import model.enums.typeCompte;
-import service.interfaces.CompteServiceInterface;
+import dao.CompteRepository;
+import entity.Compte;
+import entity.CompteCourant;
+import entity.CompteEpargne;
+import enums.typeCompte;
 import util.Helper;
 import util.Validateur;
 
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 
@@ -145,7 +142,7 @@ public class CompteService implements CompteServiceInterface {
 
         } catch (Exception e) {
             System.out.println("Erreur lors de la récupération des comptes : " + e.getMessage());
-            return List.of(); // retourne une liste vide en cas d'erreur
+            return List.of();
         }
     }
 

@@ -1,10 +1,5 @@
 package test;
 
-import dao.repository.ClientRepoImp;
-import model.entity.Client;
-
-import java.util.UUID;
-
 public class ClientTest {
 //    public static void main(String[] args) {
 //        String uuidPart = UUID.randomUUID().toString().replace("-", "").substring(0, 20);

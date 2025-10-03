@@ -1,6 +1,4 @@
-package model.entity;
-
-import java.util.List;
+package entity;
 
 public record Client (
     String id,

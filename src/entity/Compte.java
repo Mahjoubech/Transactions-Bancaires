@@ -1,6 +1,6 @@
-package model.entity;
+package entity;
 
-import model.enums.typeCompte;
+import enums.typeCompte;
 
 public sealed class Compte  permits  CompteCourant, CompteEpargne{
     protected String id ;

@@ -1,12 +1,10 @@
 package ui;
 
-import model.entity.Client;
-import model.entity.Compte;
-import model.entity.CompteCourant;
-import model.entity.CompteEpargne;
-import model.enums.typeCompte;
-import org.w3c.dom.ls.LSOutput;
-import service.interfaces.CompteServiceInterface;
+import entity.Compte;
+import entity.CompteCourant;
+import entity.CompteEpargne;
+import enums.typeCompte;
+import service.CompteServiceInterface;
 
 import java.util.List;
 import java.util.Optional;

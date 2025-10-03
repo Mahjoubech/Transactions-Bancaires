@@ -1,7 +1,5 @@
-package dao.repository;
-import dao.interfaces.ClientRepository;
-import dataeBase.ConectionDB;
-import model.entity.Client;
+package dao;
+import entity.Client;
 
 import  java.sql.Connection;
 import java.sql.SQLException;

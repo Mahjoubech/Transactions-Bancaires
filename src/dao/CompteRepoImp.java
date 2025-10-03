@@ -1,10 +1,9 @@
-package dao.repository;
+package dao;
 
-import dao.interfaces.CompteRepository;
-import model.entity.Compte;
-import model.entity.CompteCourant;
-import model.entity.CompteEpargne;
-import model.enums.typeCompte;
+import entity.Compte;
+import entity.CompteCourant;
+import entity.CompteEpargne;
+import enums.typeCompte;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;

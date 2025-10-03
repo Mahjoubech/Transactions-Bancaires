@@ -1,5 +1,5 @@
-package model.entity;
-import model.enums.typeCompte;
+package entity;
+import enums.typeCompte;
 
 public final class CompteEpargne extends Compte {
     private double tauxInteret;

@@ -1,9 +1,7 @@
 package service;
 
-import dao.interfaces.ClientRepository;
-import dao.repository.ClientRepoImp;
-import model.entity.Client;
-import service.interfaces.ClientServiceInterface;
+import dao.ClientRepository;
+import entity.Client;
 import util.Helper;
 import util.Validateur;
 

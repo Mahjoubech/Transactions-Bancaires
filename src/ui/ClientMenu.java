@@ -1,13 +1,9 @@
 package ui;
 
-import model.entity.Client;
-import model.entity.CompteCourant;
-import model.entity.CompteEpargne;
-import model.enums.typeCompte;
-import service.ClientService;
-import service.interfaces.ClientServiceInterface;
-import service.interfaces.CompteServiceInterface;
-import util.Helper;
+import entity.Client;
+import enums.typeCompte;
+import service.ClientServiceInterface;
+import service.CompteServiceInterface;
 
 import java.util.List;
 import java.util.Scanner;
