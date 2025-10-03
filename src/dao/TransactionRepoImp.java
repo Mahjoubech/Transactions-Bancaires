@@ -6,6 +6,7 @@ import util.DateUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,6 +105,34 @@ public class TransactionRepoImp implements TransactionRepository {
             throw new RuntimeException(e);
         }
     }
+    @Override
+    public List<Transaction> findByMonth(int year, int month) {
+        String request = "SELECT * FROM transaction WHERE YEAR(date) = ? AND MONTH(date) = ?";
+        List<Transaction> list = new ArrayList<>();
+
+        try (var ps = conn.prepareStatement(request)) {
+            ps.setInt(1, year);
+            ps.setInt(2, month);
+            var rs = ps.executeQuery();
+            while (rs.next()) {
+                Transaction t = new Transaction(
+                        rs.getString("id"),
+                        rs.getTimestamp("date"),
+                        rs.getDouble("montant"),
+                        rs.getString("idCompte"),
+                        typeTransaction.valueOf(rs.getString("typeTransaction")),
+                        rs.getString("lieu")
+                );
+                list.add(t);
+            }
+            return list;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
 
 
