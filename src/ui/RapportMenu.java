@@ -16,8 +16,8 @@ public class RapportMenu {
     public void showMenu() {
         while (true) {
             System.out.println("\n--- Rapport Menu ---");
-            System.out.println("1.top 5 des clients par solde.");
-            System.out.println("2. Liste des transactions d'un compte");
+            System.out.println("1. top 5 des clients par solde.");
+            System.out.println("2. produire un rapport mensuel des transactions.");
             System.out.println("3. Retour au menu principal");
             System.out.print("Choix: ");
             String choice = sc.nextLine();
@@ -39,6 +39,17 @@ public class RapportMenu {
                         }
                     }catch (Exception e){
                         System.out.println("\nErreur lors de la récupération des données: " + e.getMessage());
+                    }
+                    break;
+                case "2": try {
+                        System.out.print("Entrer l'année (ex: 2025): ");
+                        int year = Integer.parseInt(sc.nextLine());
+                        System.out.print("Entrer le mois (1-12): ");
+                        int month = Integer.parseInt(sc.nextLine());
+                        rapportService.rapportMensuel(year , month);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Erreur: " + e.getMessage());
                     }
                     break;
                 default:
