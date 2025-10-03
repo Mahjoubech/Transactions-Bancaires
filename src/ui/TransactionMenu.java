@@ -24,7 +24,7 @@ public class TransactionMenu {
             int choix;
 
             do {
-                System.out.println("\n===== MENU =====");
+                System.out.println("\n===== MENU Transaction =====");
                 System.out.println("1. Ajouter transaction");
                 System.out.println("2. Afficher toutes les transactions");
                 System.out.println("3. Rechercher transaction par : ");
@@ -164,7 +164,7 @@ private void ajouterTransaction() {
     }
 }
 
-    private void afficheAllTransactions() {
+        private void afficheAllTransactions() {
             try {
                 List<Transaction> transactions = transactionService.getAll();
                 System.out.printf("%-3s | %-36s | %-12s | %-10s | %-30s | %-36s\n",

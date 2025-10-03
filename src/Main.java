@@ -7,16 +7,8 @@ import dao.ClientRepoImp;
 import dao.CompteRepoImp;
 import dao.TransactionRepoImp;
 import dataBase.ConectionDB;
-import service.ClientService;
-import service.CompteService;
-import service.TransactionService;
-import service.ClientServiceInterface;
-import service.CompteServiceInterface;
-import service.TransactionServiceInterface;
-import ui.ClientMenu;
-import ui.CreationCompteMenu;
-import ui.Menu;
-import ui.TransactionMenu;
+import service.*;
+import ui.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,11 +19,13 @@ public class Main {
             CompteRepository comptetRepo = new CompteRepoImp(conn);
             CompteServiceInterface compteService = new CompteService(comptetRepo);
             TransactionRepository transactionRepo = new TransactionRepoImp(conn);
+            RapportServiceInterface rapportService = new RapportService( comptetRepo ,clientRepo);
             TransactionServiceInterface transactionService = new TransactionService(transactionRepo , comptetRepo);
             ClientMenu hh = new ClientMenu(clientService , compteService);
             CreationCompteMenu kk = new CreationCompteMenu( compteService);
             TransactionMenu tt = new TransactionMenu(transactionService);
-            Menu JJ = new Menu( hh, kk , tt);
+            RapportMenu rr = new RapportMenu(rapportService);
+            Menu JJ = new Menu( hh, kk , tt , rr);
             JJ.afficheMenu();
             System.out.println("Test de connexion réussi !");
             conn.close();

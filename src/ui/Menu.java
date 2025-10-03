@@ -7,14 +7,16 @@ public class Menu {
     private final ClientMenu clientMenu;
     private final CreationCompteMenu creationCompteMenu;
     private final TransactionMenu transactionMenu;
-    public Menu(ClientMenu clientMenu, CreationCompteMenu creationCompteMenu , TransactionMenu transactionMenu) {
+    private final RapportMenu rapportMenu;
+    public Menu(ClientMenu clientMenu, CreationCompteMenu creationCompteMenu , TransactionMenu transactionMenu , RapportMenu rapportMenu) {
         this.clientMenu = clientMenu;
         this.creationCompteMenu = creationCompteMenu;
         this.transactionMenu = transactionMenu;
+        this.rapportMenu = rapportMenu;
     }
     public  void afficheMenu(){
         try{
-
+            Thread.sleep(1000);
         }catch (Exception e){
             System.out.println("Erreur : " + e.getMessage());
         }
@@ -34,8 +36,7 @@ public class Menu {
                 case 1 -> clientMenu.affiche();
                 case 2 -> creationCompteMenu.afficheCompte();
                 case 3 -> transactionMenu.afficherMenu();
-//              case "4" -> searchCompte();
-//              case "5" -> getAllComptesByClient();
+                case 4 -> rapportMenu.showMenu();
                 case 0 -> { return;
                 }
                 default -> System.out.println("Option invalide.");
