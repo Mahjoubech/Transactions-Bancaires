@@ -11,8 +11,8 @@ public interface CompteServiceInterface {
     void update(String id, double solde, typeCompte typeCompte, double decouvert, double taux);
     void delete(String id);
     Optional<Compte> findById(String id);
-    List<Compte> getAllClomptes();
-//    List<Compte> getByIdClient(String id);
+     List<Compte> getAllClomptes();
+//     List<Compte> getByIdClient(String id);
 
 
 }
