@@ -20,7 +20,9 @@ public class RapportMenu {
             System.out.println("1. top 5 des clients par solde.");
             System.out.println("2. produire un rapport mensuel des transactions.");
             System.out.println("3. Détecter les transactions suspectes");
-            System.out.println("0. Retour au menu principal");
+            System.out.println("4. Comptes inactifs");
+            System.out.println("5. Rapport complet");
+            System.out.println("0. Quitter");
             System.out.print("Choix: ");
             String choice = sc.nextLine();
             switch (choice) {
@@ -84,6 +86,14 @@ public class RapportMenu {
                         System.out.println("Erreur lors de la détection: " + e.getMessage());
                     }
                     break;
+                case "4":
+                    System.out.print("Entrer période d’inactivité (jours): ");
+                    int periode = Integer.parseInt(sc.nextLine());
+                    List<String> inactifs = rapportService.comptesInactifs(periode);
+                    System.out.println("\n=== Comptes inactifs ===");
+                    for (String cId : inactifs) System.out.println(cId);
+                    break;
+
                 case "0":
                     System.out.println("Au revoir!");
                     return;
