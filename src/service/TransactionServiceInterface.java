@@ -9,13 +9,14 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface TransactionServiceInterface {
-    void ajoute(double amount, String idCompte, typeTransaction type, String lieu);
+    void ajoute(double amount, String idCompte, typeTransaction type, String lieu , String description);
     Optional<Transaction> findById(String id);
     List<Transaction> findByMontant(Double montant);
     List<Transaction> findByDate(Date dt);
     List<Transaction> getAll();
     List<Transaction> findByType(typeTransaction type);
     List<Transaction> findByLieu(String lieu);
+    void findByCompte(String idCompte);
     Map<typeTransaction, List<Transaction>> groupByType();
     Map<String, List<Transaction>> groupByDate();
     double totalByCompte(String idCompte);
@@ -23,4 +24,5 @@ public interface TransactionServiceInterface {
     double totalByClient(String idClient);
     double moyenneByClient(String idClient);
     List<Transaction> detecterTransactionsSuspectes(double seuilMontant, String idClient);
+
 }

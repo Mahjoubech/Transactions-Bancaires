@@ -105,6 +105,7 @@ public class TransactionRepoImp implements TransactionRepository {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public List<Transaction> findByMonth(int year, int month) {
         String request = "SELECT * FROM transaction WHERE YEAR(date) = ? AND MONTH(date) = ?";

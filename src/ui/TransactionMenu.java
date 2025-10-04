@@ -45,7 +45,7 @@ public class TransactionMenu {
                          afficheAllTransactions();
                          break;
                     case 3:
-                        System.out.println("1: Mpntant, 2: Date, 3: type, 4:Lieu : ");
+                        System.out.println("1: Mpntant, 2: Date, 3: type, 4:Lieu : , 5: Compte");
                         int chx = sc.nextInt();
                         sc.nextLine();
                         switch (chx) {
@@ -53,9 +53,11 @@ public class TransactionMenu {
                             case 2: searchByDate(); break;
                             case 3: searchByType(); break;
                             case 4: searchByLieu(); break;
-
+                            case 5: searchByCompte(); break;
+                            default:
+                                System.out.println("Choix invalide !");
                         }
-
+                          break;
                     case 4:
                         System.out.println("1: Type, 2: Date : ");
                         int chxx = sc.nextInt();
@@ -125,18 +127,20 @@ private void ajouterTransaction() {
         System.out.print("Montant: ");
         while (!sc.hasNextDouble()) {
             System.out.println("Veuillez entrer un nombre valide !");
-            sc.next(); // skip invalid
+            sc.next();
         }
         double montant = sc.nextDouble();
-        sc.nextLine(); // clear newline
+        sc.nextLine();
+        System.out.print("Lieu: ");
+        String lieu = sc.nextLine();
 
         System.out.println("Type de transaction (1: RETRAIT, 2: VERSEMENT, 3: VIREMENT) : ");
         while (!sc.hasNextInt()) {
             System.out.println("Veuillez entrer un nombre valide !");
-            sc.next(); // skip invalid
+            sc.next();
         }
         int typeChoix = sc.nextInt();
-        sc.nextLine(); // clear newline
+        sc.nextLine();
 
         typeTransaction type = null;
         switch (typeChoix) {
@@ -148,22 +152,18 @@ private void ajouterTransaction() {
                 return;
         }
 
-        String lieu = "";
+        String destination = "";
         if (type == typeTransaction.VIREMENT) {
-            System.out.print("Entrez les détails du virement (source->destination): ");
-            lieu = sc.nextLine();
-        } else {
-            System.out.print("Lieu: ");
-            lieu = sc.nextLine();
+            System.out.print("Entrez les détails du virement destination: ");
+            destination = sc.nextLine();
         }
 
-        transactionService.ajoute(montant, idCompte, type, lieu);
+        transactionService.ajoute(montant, idCompte, type, lieu , destination);
     } catch (Exception e) {
         System.out.println("Erreur: " + e.getMessage());
         sc.nextLine(); // nettoyer buffer en cas d'erreur
     }
 }
-
         private void afficheAllTransactions() {
             try {
                 List<Transaction> transactions = transactionService.getAll();
@@ -329,6 +329,13 @@ private void ajouterTransaction() {
             System.out.println("------------------------------------");
         });
     }
+        private void searchByCompte() {
+            System.out.print("Entrez votre Id De Compte: ");
+            String id = sc.nextLine();
+            try {
+                transactionService.findByCompte(id);
+            } catch (Exception e) {
+            }}
         public void totalMoyenneParCompte() {
         System.out.print("Entrez l'ID du compte : ");
         String id = sc.nextLine();
