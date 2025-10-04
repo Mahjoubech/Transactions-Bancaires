@@ -93,7 +93,22 @@ public class RapportMenu {
                     System.out.println("\n=== Comptes inactifs ===");
                     for (String cId : inactifs) System.out.println(cId);
                     break;
+                case "5":
+                    try {
+                        System.out.print("Seuil montant: ");
+                        double seuil = Double.parseDouble(sc.nextLine());
+                        System.out.print("Pays habituel: ");
+                        String pays = sc.nextLine();
+                        System.out.print("Max transactions/min: ");
+                        int maxTx = Integer.parseInt(sc.nextLine());
+                        System.out.print("Période inactivité (jours): ");
+                        int periodeJ = Integer.parseInt(sc.nextLine());
 
+                        rapportService.rapportComplet(seuil, pays, maxTx, periodeJ);
+                    } catch (Exception e) {
+                        System.out.println("Erreur: " + e.getMessage());
+                    }
+                    break;
                 case "0":
                     System.out.println("Au revoir!");
                     return;
