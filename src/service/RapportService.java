@@ -8,8 +8,7 @@ import entity.Compte;
 import entity.Transaction;
 import enums.typeTransaction;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RapportService implements RapportServiceInterface {
@@ -73,6 +72,44 @@ public class RapportService implements RapportServiceInterface {
         }catch (Exception e){
             System.out.println("Erreur lors de la génération du rapport: " + e.getMessage());
         }
+    }
+    @Override
+    public List<Transaction> detecterTransactionsSuspectes(double seuilMontant, String paysHabituel, int maxTransactionsParMinute) {
+        List<Transaction> suspectes = new ArrayList<>();
+        try {
+            List<Transaction> toutesTransactions = transactionRepository.findAll();
+
+            for (Transaction t : toutesTransactions) {
+                boolean suspect = false;
+
+                if (t.montant() > seuilMontant) {
+                    suspect = true;
+                }
+
+                if (t.lieu() != null) {
+                    String lieu = t.lieu().trim();
+                    if (!lieu.equalsIgnoreCase(paysHabituel)) {
+                        suspect = true;
+                    }
+                }
+
+                long count = toutesTransactions.stream()
+                        .filter(trx -> trx.idCompte().equalsIgnoreCase(t.idCompte())
+                                && trx.date().equals(t.date()))
+                        .count();
+                if (count > maxTransactionsParMinute) {
+                    suspect = true;
+                }
+
+                if (suspect) {
+                    suspectes.add(t);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la détection des transactions suspectes: " + e.getMessage());
+        }
+        return suspectes;
     }
 
 }

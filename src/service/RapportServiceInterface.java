@@ -1,6 +1,7 @@
 package service;
 
 import entity.Client;
+import entity.Transaction;
 
 import java.util.List;
 
@@ -10,4 +11,6 @@ public interface RapportServiceInterface {
     double totalSolde(String idClient);
 
     void rapportMensuel(int year, int month);
+    List<Transaction> detecterTransactionsSuspectes(double seuil, String paysHabituel, int maxTransactionsParMinute);
+
 }

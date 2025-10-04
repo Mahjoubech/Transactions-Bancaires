@@ -79,7 +79,7 @@ public class TransactionMenu {
                         break;
                     case 0:
                         System.out.println("Au revoir!");
-                        break;
+                        return;
                     default:
                         System.out.println("Choix invalide !");
                 }
