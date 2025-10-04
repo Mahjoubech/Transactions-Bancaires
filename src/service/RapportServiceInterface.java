@@ -13,5 +13,6 @@ public interface RapportServiceInterface {
     void rapportMensuel(int year, int month);
     List<Transaction> detecterTransactionsSuspectes(double seuil, String paysHabituel, int maxTransactionsParMinute);
     List<String> comptesInactifs(int periodeJours);
+    void rapportComplet(double seuil, String paysHabituel, int maxTx, int periodeJours);
 
 }

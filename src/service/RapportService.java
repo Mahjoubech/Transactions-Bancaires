@@ -142,5 +142,32 @@ public class RapportService implements RapportServiceInterface {
         return inactifs;
     }
 
+    @Override
+    public void rapportComplet(double seuil, String paysHabituel, int maxTx, int periodeJours) {
+        List<String> inactifs = comptesInactifs(periodeJours);
+        List<Transaction> suspectes = detecterTransactionsSuspectes(seuil, paysHabituel, maxTx);
 
+        System.out.println("\n=== Comptes inactifs ===");
+        for (String cId : inactifs) {
+            Compte c = compteRepository.findById(cId).orElse(null);
+            if (c != null) {
+                Client client = clientRepository.findById(c.getIdClient()).orElse(null);
+                System.out.printf("%s | Nom: %s | Solde: %.2f MAD\n",
+                        c.getId(),
+                        client != null ? client.nom() : "Inconnu",
+                        c.getSolde());
+            }
+        }
+
+        System.out.println("\n=== Transactions suspectes ===");
+        for (Transaction t : suspectes) {
+            System.out.printf("%s | Compte: %s | Type: %s | Montant: %.2f MAD | Lieu: %s | Date: %s\n",
+                    t.id(),
+                    t.idCompte(),
+                    t.type(),
+                    t.montant(),
+                    t.lieu(),
+                    t.date());
+        }
+    }
 }
