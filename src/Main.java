@@ -20,7 +20,7 @@ public class Main {
             CompteServiceInterface compteService = new CompteService(comptetRepo);
             TransactionRepository transactionRepo = new TransactionRepoImp(conn);
             RapportServiceInterface rapportService = new RapportService( comptetRepo ,clientRepo , transactionRepo);
-            TransactionServiceInterface transactionService = new TransactionService(transactionRepo , comptetRepo);
+            TransactionServiceInterface transactionService = new TransactionService(transactionRepo , comptetRepo , clientRepo);
             ClientMenu hh = new ClientMenu(clientService , compteService);
             CreationCompteMenu kk = new CreationCompteMenu( compteService);
             TransactionMenu tt = new TransactionMenu(transactionService);

@@ -1,6 +1,7 @@
 package ui;
 
 import entity.Client;
+import entity.Transaction;
 import service.RapportServiceInterface;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class RapportMenu {
             System.out.println("\n--- Rapport Menu ---");
             System.out.println("1. top 5 des clients par solde.");
             System.out.println("2. produire un rapport mensuel des transactions.");
-            System.out.println("3. Retour au menu principal");
+            System.out.println("3. Détecter les transactions suspectes");
+            System.out.println("0. Retour au menu principal");
             System.out.print("Choix: ");
             String choice = sc.nextLine();
             switch (choice) {
@@ -52,6 +54,39 @@ public class RapportMenu {
                         System.out.println("Erreur: " + e.getMessage());
                     }
                     break;
+                case "3":
+                    try {
+                        System.out.print("Entrer le seuil de montant (ex: 10000): ");
+                        double seuil = Double.parseDouble(sc.nextLine());
+                        System.out.print("Entrer le pays habituel (ex: Maroc): ");
+                        String paysHabituel = sc.nextLine();
+                        System.out.print("Entrer le nombre max de transactions par minute: ");
+                        int maxTx = Integer.parseInt(sc.nextLine());
+
+                        // Appel du service
+                        List<Transaction> suspectes = rapportService.detecterTransactionsSuspectes(seuil, paysHabituel, maxTx);
+
+                        if (suspectes.isEmpty()) {
+                            System.out.println("Aucune transaction suspecte détectée.");
+                        } else {
+                            System.out.println("\n=== Transactions suspectes ===");
+                            for (Transaction t : suspectes) {
+                                System.out.printf("%s | Compte: %s | Type: %s | Montant: %.2f MAD | Lieu: %s | Date: %s\n",
+                                        t.id(),
+                                        t.idCompte(),
+                                        t.type(),
+                                        t.montant(),
+                                        t.lieu(),
+                                        t.date());
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erreur lors de la détection: " + e.getMessage());
+                    }
+                    break;
+                case "0":
+                    System.out.println("Au revoir!");
+                    return;
                 default:
                     System.out.println("Choix invalide. Veuillez réessayer.");
             }
