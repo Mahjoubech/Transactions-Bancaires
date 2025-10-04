@@ -8,6 +8,7 @@ import entity.Compte;
 import entity.Transaction;
 import enums.typeTransaction;
 
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,5 +112,35 @@ public class RapportService implements RapportServiceInterface {
         }
         return suspectes;
     }
+    @Override
+    public List<String> comptesInactifs(int periodeJours) {
+        List<String> inactifs = new ArrayList<>();
+        Date maintenant = new Date();
+
+        for (Compte c : compteRepository.findAll()) {
+            try {
+                Optional<Transaction> derniereTx = transactionRepository.findAll().stream()
+                        .filter(t -> t.idCompte().equalsIgnoreCase(c.getId()))
+                        .max(Comparator.comparing(Transaction::date));
+
+                if (derniereTx.isEmpty()) {
+                    inactifs.add(c.getId());
+                } else {
+                    Date dateTx = derniereTx.get().date(); // java.sql.Date ou java.util.Date
+                    long diffMillis = maintenant.getTime() - dateTx.getTime();
+                    long diffJours = diffMillis / (1000 * 60 * 60 * 24);
+
+                    if (diffJours >= periodeJours) {
+                        inactifs.add(c.getId());
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Erreur pour le compte " + c.getId() + ": " + e.getMessage());
+            }
+        }
+
+        return inactifs;
+    }
+
 
 }
